@@ -8,7 +8,7 @@ pygame.mixer.init()
 pygame.init()
 
 def level1():
-  screen = pygame.display.set_mode((800, 500))
+    screen = pygame.display.set_mode((800, 500))
 
     # Background image
     scaryBackground = pygame.image.load("scaryBackground.jpeg")
@@ -19,12 +19,18 @@ def level1():
     easyMaze = pygame.transform.scale(easyMaze, (600, 500))
     easyMaze_rect = easyMaze.get_rect(topleft=(0, 0))
 
+    # "maze" mask
+    easyMaze_mask = pygame.mask.from_surface(easyMaze)
+
     # "Player"
     player = pygame.image.load("player.png")
-    player = pygame.transform.scale(player, (25,30))
+    player = pygame.transform.scale(player, (25, 30))
     playerRect = player.get_rect()
     playerRect.topleft = (0, 15)  # Initial player position
     player_speed = 1
+
+    # "player" mask
+    player_mask = pygame.mask.from_surface(player)
 
     # "Exit" option
     menuExit = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 35)
@@ -42,7 +48,7 @@ def level1():
             if event.type == MOUSEBUTTONDOWN:
                 if exitRect.collidepoint(event.pos):
                     sys.exit(0)
-    
+
         # Check movement in each direction and apply if no collision
         if keys[pygame.K_a]:  # Move left
             playerRect.x -= player_speed
@@ -52,12 +58,17 @@ def level1():
             playerRect.y -= player_speed
         if keys[pygame.K_s]:  # Move down
             playerRect.y += player_speed
-        # Drawing
+
+        offset = (playerRect.x - easyMaze_rect.x, playerRect.y - easyMaze_rect.y)
+        if easyMaze_mask.overlap(player_mask, offset):
+            DeathScreen()
+        
+        # Display
         screen.blit(scaryBackground, (0, 0))
         screen.blit(player, playerRect.topleft)
         screen.blit(easyMaze, easyMaze_rect.topleft)
         screen.blit(menuExitSurf, exitRect)
-    
+
         pygame.display.flip()
 
 level1()
