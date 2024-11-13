@@ -1,9 +1,6 @@
 import pygame
 from pygame.locals import *
 import sys
-pygame.mixer.init()
-pygame.init()
-
 import random
 
 pygame.mixer.init()
@@ -39,14 +36,14 @@ def InstructionScreen():
     menuInstructions = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 22)
 
     # lines of instructions
-    line1 = menuInstructions.render("All you need to do is to get to the end of the maze!", True, (255, 255, 255))
+    line1 = menuInstructions.render("All you need to do is to get to the end of each maze!", True, (255, 255, 255))
     line1Rect = line1.get_rect(center=(400, 120))
 
-    line2 = menuInstructions.render("Beware of unexpected enemies...", True,
+    line2 = menuInstructions.render("There will be two levels of mazes which will increase in difficulty!", True,
                                     (255, 255, 255))
     line2Rect = line2.get_rect(center=(400, 150))
 
-    line3 = menuInstructions.render("Goodluck!", True, (255, 255, 255))
+    line3 = menuInstructions.render("Beware of unexpected enemies!", True, (255, 255, 255))
     line3Rect = line3.get_rect(center=(400, 180))
 
     # moving instructions
@@ -67,14 +64,13 @@ def InstructionScreen():
     dKey = menuMovingInstructions.render("D", True, (255, 0, 0))
     dKeyRect = dKey.get_rect(center=(220, 380))
 
-    # "Your player:"
+    #"Your player:"
     playerTitle = menuMovingInstructions.render("Your player:", True, (255, 255, 255))
-    playerTitleRect = playerTitle.get_rect(center=(580, 280))
+    playerTitleRect = playerTitle.get_rect(center=(580,280))
 
-    # player image
-
+    #player image
     playerImage = pygame.image.load("player.png")
-    playerImage = pygame.transform.scale(playerImage, (80, 80))
+    playerImage = pygame.transform.scale(playerImage, (80,80))
 
     # WASD instructions
     menuWASDInstructions = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 20)
@@ -90,8 +86,6 @@ def InstructionScreen():
 
     line7 = menuWASDInstructions.render("D- Right", True, (255, 255, 255))
     line7Rect = line6.get_rect(center=(50, 400))
-
-
 
     running = True
     while running:
@@ -135,7 +129,7 @@ def InstructionScreen():
         screen.blit(sKey, sKeyRect)
         screen.blit(dKey, dKeyRect)
 
-        screen.blit(playerTitle,playerTitleRect)
+        screen.blit(playerTitle, playerTitleRect)
         screen.blit(playerImage, (530, 320))
 
         screen.blit(line4, line4Rect)
@@ -156,19 +150,19 @@ def CreditsScreen():
     menuCredits = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 22)
 
     # lines of credits
-    line1 = menuCredits.render("Rachel Gamble - Leader & Main Coder", True, (255, 255, 255))
+    line1 = menuCredits.render("Rachel Gamble - Leader", True, (255, 255, 255))
     line1Rect = line1.get_rect(center=(400, 120))
 
     line2 = menuCredits.render("Tinnola Adeboye - Front-End/Sounds & Graphics", True, (255, 255, 255))
     line2Rect = line2.get_rect(center=(400, 160))
 
-    line3 = menuCredits.render("Johnathan Atkins - Presentation ", True, (255, 255, 255))
+    line3 = menuCredits.render("Johnathan Atkins - ", True, (255, 255, 255))
     line3Rect = line3.get_rect(center=(400, 200))
 
-    line4 = menuCredits.render("Malcom Mcginty - Editorial Coder ", True, (255, 255, 255))
+    line4 = menuCredits.render("Malcom Mcginty - ", True, (255, 255, 255))
     line4Rect = line4.get_rect(center=(400, 240))
 
-    line5 = menuCredits.render("Robert Russell - Editorial & Back-end Coder ", True, (255, 255, 255))
+    line5 = menuCredits.render("Robert Russell - ", True, (255, 255, 255))
     line5Rect = line5.get_rect(center=(400, 280))
 
     # "Back" back to menu
@@ -481,17 +475,20 @@ def MenuScreen():
                     pygame.time.delay(2000) #Waits for sound to play then sends you to the next screen!
                     level1()
 
-            # clapping sound plays when you click credits
+            # clapping sound plays when you click start
             clappingSound = pygame.mixer.Sound('clappingSound.mp3')
             if event.type == MOUSEBUTTONDOWN:
                 if creditsRect.collidepoint(event.pos):
                     clappingSound.play()
                     clappingSound.fadeout(2500) # fading out the sound
-                    CreditsScreen()
+                    level1()
 
             if event.type == MOUSEBUTTONDOWN:
                 if menuInstructionsRect.collidepoint(event.pos):
                     InstructionScreen()
+            if event.type == MOUSEBUTTONDOWN:
+                if creditsRect.collidepoint(event.pos):
+                    CreditsScreen()
 
         mouse_pos = pygame.mouse.get_pos()
         # change color of the "credits" option to red when hovered over
